@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router()
-import { userLogin, userRegistration } from '../controllers/userController.js';
+import { getUserProfile, userLogin, userRegistration } from '../controllers/userController.js';
+import verifyToken from '../middleware/authorization.js';
 
 // @ /api/user/resister 
 router.post('/register',userRegistration);
@@ -12,15 +13,9 @@ router.post('/login', userLogin);
 
 
 // @ /api/user/profile 
-router.get('/profile',(req,res)=>{
-    console.log("Post")
-})
+router.get('/profile',verifyToken,getUserProfile)
 
 
-// @ /api/user/profile/123 
-router.put('/profile', (req,res)=>{
-    console.log("Post")
-})
 
 // @ /api/user/logout 
 router.post('/logout', (req,res)=>{
