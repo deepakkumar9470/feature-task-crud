@@ -19,8 +19,10 @@ export const createTask = async (req, res) => {
 
 /********** Getting all tasks *********/
 export const getAllTasks = async (req, res) => {
+    const query = req.query.status ? { status: req.query.status } : {};
+
     try {
-      const allTasks = await  TaskModel.find().sort({ createdAt: -1 });
+      const allTasks = await  TaskModel.find(query).sort({ createdAt: -1 });
       res.status(200).json({ message: "Task fetched successfully", tasks: allTasks });
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch tasks" });
@@ -30,10 +32,13 @@ export const getAllTasks = async (req, res) => {
 /********** Getting single task by id *********/
 export const getTaskById = async (req, res) => {
     try {
-      const singleTask = await  TaskModel.findById(req.params.id)
+   
+          const singleTask = await TaskModel.findById(req.params.id)
+        
       if (!singleTask) {
         return res.status(404).json({ message: "Task not found" });
       }
+
       res.status(200).json({singleTask });
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch single task" });
