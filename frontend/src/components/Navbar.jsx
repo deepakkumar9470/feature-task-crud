@@ -24,7 +24,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Hamburger Icon for Mobile Menu */}
         <div className="block md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
