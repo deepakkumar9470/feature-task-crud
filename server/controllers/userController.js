@@ -72,15 +72,31 @@ export const userLogin = async (req, res) => {
 /********** Get User Profile  **********/
 export const getUserProfile = async (req, res) => {
   const user = await UserModel.findById(req.user._id);
+  try {
+    if (user) {
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch user profile" });
 
-  if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-    });
-  } else {
-    res.status(404);
-    throw new Error('User not found');
   }
+
+
 };
+
+/********** Logout User  **********/
+export const logoutUser = async (req, res) => { 
+  res.cookie('jwt','', {
+    httpOnly : true,
+    expires : new Date(0)
+});
+res.status(200).json({message:'User logout'})
+
+}
