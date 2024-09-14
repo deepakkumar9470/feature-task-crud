@@ -2,16 +2,17 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 const app = express();
-const PORT = process.env.PORT || 8000
-import cookieParser from 'cookie-parser'
-import cors from 'cors'
-
+const PORT = process.env.PORT || 8000;
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import connectDatabase from './db/db.js';
 
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({extended : false}))
 app.use(cors());
 
+connectDatabase()
 
 app.get('/', (req,res)=>{
     res.send('hello mern auth..')
