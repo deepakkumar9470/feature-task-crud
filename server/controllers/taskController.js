@@ -27,3 +27,15 @@ export const getAllTasks = async (req, res) => {
     }
   };
   
+/********** Getting single task by id *********/
+export const getTaskById = async (req, res) => {
+    try {
+      const singleTask = await  TaskModel.findById(req.params.id)
+      if (!singleTask) {
+        return res.status(404).json({ message: "Task not found" });
+      }
+      res.status(200).json({singleTask });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch single task" });
+    }
+  };  
