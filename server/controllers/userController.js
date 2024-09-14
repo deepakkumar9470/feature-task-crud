@@ -67,3 +67,23 @@ export const userLogin = async (req, res) => {
       res.status(500).json({ message: "Failed to login user" });
     }
   };
+
+
+/********** User Profile  **********/
+export const userProfile = async (req, res) => {
+ 
+    try {
+        const user = await UserModel.findOne({ email });
+
+        res.status(200).json({
+        message: "User logged in successfully.",
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        token 
+      });
+  
+    } catch (error) {
+      res.status(500).json({ message: "Failed to login user" });
+    }
+  };  
