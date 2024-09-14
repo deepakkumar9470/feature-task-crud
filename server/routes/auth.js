@@ -1,10 +1,9 @@
 import express from 'express';
 const router = express.Router()
+import { userRegistration } from '../controllers/userController.js';
 
 // @ /api/user/resister 
-router.post('/register',(req,res)=>{
-    console.log("Post")
-});
+router.post('/register',userRegistration);
 
 
 
