@@ -7,17 +7,20 @@ import {
   createRoutesFromElements,
   Route,
   RouterProvider,
-  BrowserRouter
 } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen.jsx';
+import Login from './pages/Login.jsx';
+import SignUp from './pages/SignUp.jsx';
 import {Provider} from 'react-redux';
+import store from './store.js';
+import { Toaster } from 'react-hot-toast';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App/>}>
       <Route index={true} path='/' element={<HomeScreen/>}/>
       <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<Register />} />
+      <Route path='/register' element={<SignUp />} />
     </Route>
   )
 )

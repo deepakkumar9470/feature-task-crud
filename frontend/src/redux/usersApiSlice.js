@@ -1,25 +1,25 @@
 import { apiSlice } from './apiSlice';
 // const USERS_URL = '/api/user';
-const AUTH_URL = process.env.REACT_API_URL
+// const AUTH_URL = process.env.REACT_API_URL
 
 export const userApiSlice = apiSlice.injectEndpoints({
     endpoints : (builder) =>({
        login:builder.mutation({
         query:(data)=>({
-            url : `${AUTH_URL}/api/user/login`,
+            url : `/api/user/login`,
             method : 'POST',
             body : data
         }),
        }),
        logout:builder.mutation({
         query:(data)=>({
-            url : `${AUTH_URL}/api/user/logout`,
+            url : `/api/user/logout`,
             method : 'POST',
         }),
        }),
-       register:builder.mutation({
+       registerUser:builder.mutation({
         query:(data)=>({
-            url : `${AUTH_URL}/api/user/register`,
+            url : `http://localhost:5000/api/user/register`,
             method : 'POST',
             body : data
         }),
@@ -27,4 +27,4 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
 })
 
-export const {useLoginMutation,useLogoutMutation,useRegisterMutation,useUpdateMutation} = userApiSlice
+export const {useLoginMutation,useLogoutMutation,useRegisterUserMutation} = userApiSlice

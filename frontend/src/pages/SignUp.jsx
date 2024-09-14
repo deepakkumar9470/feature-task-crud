@@ -1,16 +1,33 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React,{useState,useEffect} from 'react';
+import { Link,useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form"
+import {useDispatch,useSelector} from 'react-redux'
+import { useRegisterUserMutation } from '../redux/usersApiSlice';
+import { setCredentials } from '../redux/authSlice';
+import toast from 'react-hot-toast';
 
 const SignUp = () => {
   
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [registerUser,{isLoading}] = useRegisterUserMutation();
   const {register,handleSubmit,watch,formState:{errors,isSubmitting}} = useForm();
+  const {userInfo} = useSelector((state)=>state.auth);
+  useEffect(() => {
+    if(userInfo){
+      navigate('/')
+    } 
+  }, [navigate,userInfo]);
 
   const onSubmit = async (data) => {
-    await new Promise((resolve)=>{
-      setTimeout(resolve,1000);
-    })
-    console.log(data)
+    try {
+      const res = await registerUser(data).unwrap();
+      dispatch(setCredentials({...res}));
+      toast(res.message)
+      navigate('/')
+      } catch (error) {
+      console.log(error)
+    }
   }
   return (
     <div className="p-6 bg-gray-900 rounded-lg shadow-lg max-w-md mx-auto">
@@ -68,9 +85,9 @@ const SignUp = () => {
         </div>
         <button 
          type='submit'
-         disabled={isSubmitting}
+         disabled={isSubmitting || isLoading}
          className="w-full bg-green-500 text-white px-4 py-2 rounded-md">
-          {isSubmitting ? 'Registering....' : 'SignUp'}
+          {isSubmitting  || isLoading? 'Registering....' : 'SignUp'}
         </button>
       </form>
       <div className="mt-4 text-center">
