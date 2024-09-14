@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors:{
-        mainbg :'#0d1117',
+        mainBg :'#0d1117',
         secBg : '#010409'
       }
     },
