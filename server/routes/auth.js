@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router()
-import { userRegistration } from '../controllers/userController.js';
+import { userLogin, userRegistration } from '../controllers/userController.js';
 
 // @ /api/user/resister 
 router.post('/register',userRegistration);
@@ -8,9 +8,7 @@ router.post('/register',userRegistration);
 
 
 // @ /api/user/login 
-router.post('/login', (req,res)=>{
-    console.log("Post")
-});
+router.post('/login', userLogin);
 
 
 // @ /api/user/profile 
