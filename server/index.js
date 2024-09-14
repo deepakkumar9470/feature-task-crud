@@ -6,11 +6,16 @@ const PORT = process.env.PORT || 8000;
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import connectDatabase from './db/db.js';
+import authRoute from './routes/auth.js';
+import taskRoute from './routes/task.js';
 
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({extended : false}))
 app.use(cors());
+
+app.use('/api/user', authRoute)
+app.use('/api/task', taskRoute)
 
 connectDatabase()
 
