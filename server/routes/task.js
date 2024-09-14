@@ -1,5 +1,5 @@
 import express from 'express';
-import { createTask } from '../controllers/taskController.js';
+import { createTask, getAllTasks } from '../controllers/taskController.js';
 const router = express.Router();
 
 // @ /api/task/create 
@@ -7,9 +7,7 @@ router.post('/create',createTask);
 
 
 // @ /api/task
-router.get('/' ,(req,res)=>{
-    console.log("Post")
-})
+router.get('/' ,getAllTasks)
 
 
 // @ /api/task/123
