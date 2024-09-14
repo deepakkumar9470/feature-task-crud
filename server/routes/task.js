@@ -1,11 +1,9 @@
-const express  = require('express')
-
-const router = express.Router()
+import express from 'express';
+import { createTask } from '../controllers/taskController.js';
+const router = express.Router();
 
 // @ /api/task/create 
-router.post('/create',(req,res)=>{
-    console.log("Post")
-});
+router.post('/create',createTask);
 
 
 // @ /api/task
