@@ -26,7 +26,8 @@ const SignUp = () => {
       toast(res.message)
       navigate('/')
       } catch (error) {
-      console.log(error)
+        const errorMessage = error?.response?.data?.message || 'opps failed to register.';
+        toast.error(errorMessage);
     }
   }
   return (

@@ -1,19 +1,39 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import ModalContainer from './ModalContainer'; // Assuming you have this component
+import { Link ,useNavigate} from 'react-router-dom';
+import ModalContainer from './ModalContainer'; 
 import SignUp from '../pages/SignUp';
 import Login from '../pages/Login';
+import { useDispatch,useSelector } from 'react-redux';
+import { useLogoutMutation } from '../redux/usersApiSlice';
+import { logout } from '../redux/authSlice';
+import toast from 'react-hot-toast';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false); // For the mobile menu toggle
-  const [showModal, setShowModal] = useState(false); // To control modal visibility
-  const [modalContent, setModalContent] = useState(''); // To handle modal content (Login or Signup)
+  const { userInfo } = useSelector((state) => state.auth);
 
-  // Function to open modal based on type (Login or Signup)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [logoutApiCall] = useLogoutMutation()
+  const [isOpen, setIsOpen] = useState(false); 
+  const [showModal, setShowModal] = useState(false); 
+  const [modalContent, setModalContent] = useState(''); 
+
   const handleOpenModal = (type) => {
     setModalContent(type);
     setShowModal(true);
   };
+
+  const logoutHandler = async () =>{
+    try {
+      const res = await logoutApiCall().unwrap()
+      dispatch(logout())
+      toast(res.message)
+      navigate('/')
+  } catch (error) {
+    const errorMessage = error?.response?.data?.message || 'An unexpected error occurred.';
+    toast.error(errorMessage);
+  }
+  }
 
   return (
     <>
@@ -51,20 +71,39 @@ const Navbar = () => {
           <nav className="w-full">
             <ul className="md:flex items-center justify-between text-base text-gray-300 space-y-4 md:space-y-0 md:space-x-6 mt-4 md:mt-0">
               <li>
-                <button
+                {
+                  !userInfo && (
+                    <button
                   onClick={() => handleOpenModal('Login')}
                   className="md:p-4 py-2 px-4 rounded-md block text-gray-100 hover:bg-green-600 transition-colors duration-300"
                 >
                   Login
                 </button>
+                  )
+                }
               </li>
               <li>
-                <button
+               {
+                !userInfo && (
+                  <button
                   onClick={() => handleOpenModal('Signup')}
                   className="md:p-4 py-2 px-4 rounded-md block bg-gradient-to-r from-blue-500 to-green-500 text-white hover:shadow-lg transition-all duration-300"
                 >
                   Sign Up
                 </button>
+                )
+               }
+
+               {
+                userInfo && (
+                  <div className='flex items-center gap-4'>
+                    <p className='text-gray-400 font-medium'>{userInfo.name}</p>
+                    <button 
+                    onClick={logoutHandler}
+                    className='className="md:p-4 py-2 px-4 rounded-md block bg-gradient-to-r from-blue-500 to-green-500 text-white hover:shadow-lg transition-all duration-300"'>Logout</button>
+                  </div>
+                )
+               }
               </li>
             </ul>
           </nav>
