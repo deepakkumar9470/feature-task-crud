@@ -1,5 +1,5 @@
 import TaskModel from '../models/Task.js';
-
+import mongoose from 'mongoose';
 /********** Creating new task *********/
 export const createTask = async (req, res) => {
     try {
@@ -22,11 +22,8 @@ export const createTask = async (req, res) => {
 /********** Getting all tasks *********/
 export const getAllTasks = async (req, res) => {
     const query = req.query.status ? { status: req.query.status } : {};
-    // const userid = req.user._id
     const userId = req.query.userId
-    // console.log(userid)
     try {
-        // const allTasks = await TaskModel.find(query).sort({ createdAt: -1 });
         const allTasks = await TaskModel.find({ user: userId, ...query }).sort({ createdAt: -1 });
         res.status(200).json({ message: "Task fetched successfully", tasks: allTasks });
     } catch (error) {
@@ -36,14 +33,27 @@ export const getAllTasks = async (req, res) => {
 
 /********** Getting single task by id *********/
 export const getTaskById = async (req, res) => {
+
+    const userId = req.user._id;
+
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({ message: "Invalid task ID" });
+    }
     try {
 
-        const singleTask = await TaskModel.findById(req.params.id)
+
+        const singleTask = await TaskModel.findById(id)
 
         if (!singleTask) {
             return res.status(404).json({ message: "Task not found" });
         }
 
+        if (!singleTask.user.equals(userId)) {
+            return res.status(401).json({ message: "You are only allowed to view your own task" });
+
+        }
         res.status(200).json({ singleTask });
     } catch (error) {
         res.status(500).json({ message: "Failed to fetch single task" });
