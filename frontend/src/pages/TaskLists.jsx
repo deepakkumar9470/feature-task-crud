@@ -19,6 +19,8 @@ const TaskLists = () => {
   const [openTaskUpdateModal,setOpenTaskUpdateModal] = useState(false);
   const [taskToUpdate, setTaskToUpdate] = useState(null);
 
+  const [filter, setFilter] = useState('all');
+
   const handleOpenModal = () => {
     setOpenTaskAddModal(true);
   };
@@ -26,6 +28,13 @@ const TaskLists = () => {
     setTaskToUpdate(data)
     setOpenTaskUpdateModal(true);
   };
+  const handleFilterChange = (type)=>{
+    setFilter(type);
+  }
+  const filteredTasks = data?.tasks?.filter((item)=>{
+    if(filter === 'all') return true;
+    return item.status === filter; 
+  });
 
   if (isLoading) {
     return <div className="text-4xl text-center mt-60 text-teal-100">Loading tasks...</div>;
@@ -50,10 +59,13 @@ const TaskLists = () => {
         toast.error(errorMessage);
     }
   }
+
+
+
+  
   return (
-  <>
-     
-       <div className="p-6 space-y-6">
+  <> 
+      <div className="p-6 space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         <div className="bg-blue-500 text-white p-4 rounded-lg shadow-lg">
           <h2 className="text-xl font-bold">Total Tasks</h2>
@@ -72,7 +84,7 @@ const TaskLists = () => {
           <p className="text-4xl">{progressTasks}</p>
         </div>
       </div>
-      <FilterTask/>
+      <FilterTask filter={filter} filterTasks = {data} handleFilterChange={handleFilterChange}/>
 
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
         <table className="min-w-full leading-normal">
@@ -93,7 +105,7 @@ const TaskLists = () => {
             </tr>
           </thead>
           <tbody>
-            {data?.tasks && data?.tasks.length>0 && data?.tasks?.map((task) => (
+            {filteredTasks?.length>0 && filteredTasks?.map((task) => (
               <tr key={task._id}>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <p className="text-gray-900 whitespace-no-wrap">{task.title}</p>
