@@ -15,7 +15,6 @@ export const taskApi = createApi({
         }),
         createTas : builder.mutation({
             query :(newTask)=>({
-            // console.log(newTask)
              url:`/api/task/create`,
              method :'POST',
              body:newTask,
@@ -24,8 +23,15 @@ export const taskApi = createApi({
              },
              credentials: 'include',
             })
+        }),
+        deleteTaskById : builder.mutation({
+            query :(id)=>({
+             url:`/api/task/${id}`,
+             method :'DELETE',
+             credentials: 'include',
+            })
         })
     })
 })
 
-export const {useGetAllTasksQuery,useCreateTasMutation} = taskApi;
+export const {useGetAllTasksQuery,useCreateTasMutation,useDeleteTaskByIdMutation} = taskApi;

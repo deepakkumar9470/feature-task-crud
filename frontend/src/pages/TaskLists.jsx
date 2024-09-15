@@ -1,29 +1,46 @@
 import React,{useState,useEffect} from 'react'
-import { useGetAllTasksQuery } from '../redux/taskApi'
+import { useGetAllTasksQuery,useDeleteTaskByIdMutation } from '../redux/taskApi'
 import { useSelector } from 'react-redux';
 import {CirclePlus} from 'lucide-react';
+import {useNavigate } from "react-router-dom";
 import TaskAdd from './TaskAdd';
 import ModalContainer from '../components/ModalContainer';
+import toast from 'react-hot-toast';
+import {Trash,Pencil} from 'lucide-react';
+
 const TaskLists = () => {
+  const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
   const {data,isLoading,isError} = useGetAllTasksQuery({userId:userInfo._id});
+  const [deleteTask] = useDeleteTaskByIdMutation();
   const [openTaskAddModal,setOpenTaskAddModal] = useState(false);
 
   const handleOpenModal = () => {
     setOpenTaskAddModal(true);
   };
   if (isLoading) {
-    return <div className="text-4xl text-teal-100">Loading tasks...</div>;
+    return <div className="text-4xl text-center mt-60 text-teal-100">Loading tasks...</div>;
   }
 
   if (isError) {
-    return <div className="text-red-500">Failed to load tasks!</div>;
+    return <div className="text-red-500 text-center mt-60">Failed to load tasks!</div>;
   }
   const totalTasks = data?.tasks?.length || 0;
   const pendingTasks = data?.tasks?.filter((task) => task.status === 'todo').length || 0;
   const completedTasks = data?.tasks?.filter((task) => task.status === 'done').length || 0;
   const progressTasks = data?.tasks?.filter((task) => task.status === 'inprogress').length || 0;
 
+  const handleTaskDelete = async (id) =>{
+    try {
+         const response = await deleteTask(id);
+         navigate('/');
+         toast(response.data.message);
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.message || "opps failed to delete task.";
+        toast.error(errorMessage);
+    }
+  }
   return (
   <>
        <div className="p-6 space-y-6">
@@ -59,11 +76,14 @@ const TaskLists = () => {
               <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                 Due Date
               </th>
+              <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
             {data?.tasks && data?.tasks.length>0 && data?.tasks?.map((task) => (
-              <tr key={task.id}>
+              <tr key={task._id}>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <p className="text-gray-900 whitespace-no-wrap">{task.title}</p>
                 </td>
@@ -73,6 +93,11 @@ const TaskLists = () => {
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <p className="text-gray-900 whitespace-no-wrap">{task.duedate}</p>
                 </td>
+                <td className="flex items-center gap-2 px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                  <Trash onClick={()=>handleTaskDelete(task._id)}  className="cursor-pointer" color="#ff0000" fontSize={10} />
+                  <Pencil className="cursor-pointer"  color="#009dff" fontSize={10} />
+                </td>
+                
               </tr>
             ))}
           </tbody>

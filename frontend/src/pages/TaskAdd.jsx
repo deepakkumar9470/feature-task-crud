@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm,Controller } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import {useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -11,7 +11,7 @@ const TaskAdd = () => {
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(new Date());
   const { userInfo } = useSelector((state) => state.auth);
-  const [createTask,resInfo]= useCreateTasMutation();
+  const [createTask]= useCreateTasMutation();
   const {
     register,
     handleSubmit,
