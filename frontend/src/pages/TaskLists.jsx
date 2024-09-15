@@ -8,6 +8,7 @@ import ModalContainer from '../components/ModalContainer';
 import toast from 'react-hot-toast';
 import {Trash,Pencil} from 'lucide-react';
 import TaskEdit from './TaskEdit';
+import FilterTask from '../components/FilterTask';
 
 const TaskLists = () => {
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ const TaskLists = () => {
   }
   return (
   <>
+     
        <div className="p-6 space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         <div className="bg-blue-500 text-white p-4 rounded-lg shadow-lg">
@@ -70,6 +72,7 @@ const TaskLists = () => {
           <p className="text-4xl">{progressTasks}</p>
         </div>
       </div>
+      <FilterTask/>
 
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
         <table className="min-w-full leading-normal">
@@ -123,6 +126,7 @@ const TaskLists = () => {
          absolute bottom-5 right-2 bg-green-600 text-xl'>
       <CirclePlus color='white' fontSize={45}/>
      </button>
+     
      
       {/* Task Add Modal Container */}
       <ModalContainer showModal={openTaskAddModal} setShowModal={setOpenTaskAddModal}>
