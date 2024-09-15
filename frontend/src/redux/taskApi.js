@@ -12,8 +12,20 @@ export const taskApi = createApi({
              method :'GET',
              params :{ userId },
             })
+        }),
+        createTas : builder.mutation({
+            query :(newTask)=>({
+            // console.log(newTask)
+             url:`/api/task/create`,
+             method :'POST',
+             body:newTask,
+             headers :{
+                'Content-type' : 'application/json',
+             },
+             credentials: 'include',
+            })
         })
     })
 })
 
-export const {useGetAllTasksQuery} = taskApi;
+export const {useGetAllTasksQuery,useCreateTasMutation} = taskApi;

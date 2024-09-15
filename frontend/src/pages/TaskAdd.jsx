@@ -6,12 +6,13 @@ import toast from "react-hot-toast";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
+import { useCreateTasMutation } from "../redux/taskApi";
 const TaskAdd = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(new Date());
   const { userInfo } = useSelector((state) => state.auth);
-  
+  const [createTask,resInfo]= useCreateTasMutation();
   const {
     register,
     handleSubmit,
@@ -29,17 +30,19 @@ const TaskAdd = () => {
 
   const onSubmit = async (data) => {
     const formattedDate = format(data.duedate, 'MM/dd/yyyy');
-
     try {
-        console.log({ ...data, duedate: formattedDate });
-        //   const res = await registerUser(data).unwrap();
-    //   dispatch(setCredentials({ ...res }));
-    //   toast(res.message);
-    //   navigate("/");
+        // console.log({ ...data, duedate: formattedDate });
+        const response = await createTask({
+            ...data,
+            duedate: formattedDate,
+          });
+      console.log(response)
+      toast(response.data.message);
+      navigate("/");
     } catch (error) {
       const errorMessage =
-        error?.response?.data?.message || "opps failed to register.";
-      toast.error(errorMessage);
+        error?.response?.data?.message || "opps failed to add task.";
+        toast.error(errorMessage);
     }
   };
   return(
@@ -74,7 +77,7 @@ const TaskAdd = () => {
         <label className="block text-white">Description</label>
         <input
           type="text"
-          {...register("email", {
+          {...register("desc", {
             required: "Description is required..",
           })}
           placeholder="Enter task desc.."
