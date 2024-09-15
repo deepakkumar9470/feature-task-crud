@@ -16,12 +16,13 @@ const TaskLists = () => {
   const [deleteTask] = useDeleteTaskByIdMutation();
   const [openTaskAddModal,setOpenTaskAddModal] = useState(false);
   const [openTaskUpdateModal,setOpenTaskUpdateModal] = useState(false);
+  const [taskToUpdate, setTaskToUpdate] = useState(null);
 
   const handleOpenModal = () => {
     setOpenTaskAddModal(true);
   };
   const handleOpenUpdateModal = (data) => {
-    console.log("editable task:",data)
+    setTaskToUpdate(data)
     setOpenTaskUpdateModal(true);
   };
 
@@ -130,7 +131,7 @@ const TaskLists = () => {
 
        {/* Task Update Modal Container */}
       <ModalContainer showModal={openTaskUpdateModal} setShowModal={setOpenTaskUpdateModal}>
-        <TaskEdit/>
+        <TaskEdit task={taskToUpdate}/>
       </ModalContainer>
   </>
   );

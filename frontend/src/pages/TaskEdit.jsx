@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm,Controller } from "react-hook-form";
 import {useSelector } from "react-redux";
@@ -6,34 +6,49 @@ import toast from "react-hot-toast";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
-import { useCreateTasMutation } from "../redux/taskApi";
-const TaskEdit = () => {
+import {useUpdateTaskMutation } from "../redux/taskApi";
+const TaskEdit = ({task}) => {
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(new Date());
   const { userInfo } = useSelector((state) => state.auth);
-  const [createTask]= useCreateTasMutation();
+  const [updateSingleTask]= useUpdateTaskMutation()
+
+
+  
   const {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm(
     {
         defaultValues: {
-          user: userInfo._id, 
-          date: new Date(),
-          status: ''
+            user: userInfo._id,
+            title: "",
+            desc: "",
+            duedate: new Date(),
+            status: "",
         }
       });
 
+
+      useEffect(() => {
+        if (task) {
+            setValue("title", task.title);
+            setValue("desc", task.desc);
+            setStartDate(new Date(task.duedate));
+            setValue("status", task.status);
+            setValue("duedate", new Date(task.duedate)); 
+          }
+    }, [task,setValue])
+    
   const onSubmit = async (data) => {
     const formattedDate = format(data.duedate, 'MM/dd/yyyy');
     try {
-        const response = await createTask({
-            ...data,
-            duedate: formattedDate,
-          });
-      toast(response.data.message);
+        const response = await updateSingleTask({ id: task._id,...data,duedate: formattedDate}).unwrap();
+        console.log(response);
+        toast(response.message);
       navigate("/");
     } catch (error) {
       const errorMessage =
@@ -53,6 +68,7 @@ const TaskEdit = () => {
           {...register("user")}
           className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-600 rounded-md"
           readOnly
+          value={userInfo._id}
         />
       </div>
       <div className="mb-4">

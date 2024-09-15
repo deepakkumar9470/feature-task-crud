@@ -13,11 +13,29 @@ export const taskApi = createApi({
              params :{ userId },
             })
         }),
+        getTaskById : builder.query({
+            query :(id)=>({
+             url:`/api/task/${id}`,
+             method :'GET',
+            credentials: 'include',
+            })
+        }),
         createTas : builder.mutation({
             query :(newTask)=>({
              url:`/api/task/create`,
              method :'POST',
              body:newTask,
+             headers :{
+                'Content-type' : 'application/json',
+             },
+             credentials: 'include',
+            })
+        }),
+        updateTask : builder.mutation({
+            query :({ id, ...data })=>({
+             url:`/api/task/${id}`,
+             method :'PUT',
+             body:data,
              headers :{
                 'Content-type' : 'application/json',
              },
@@ -34,4 +52,9 @@ export const taskApi = createApi({
     })
 })
 
-export const {useGetAllTasksQuery,useCreateTasMutation,useDeleteTaskByIdMutation} = taskApi;
+export const {
+    useGetAllTasksQuery,
+    useGetTaskByIdQuery,
+    useCreateTasMutation,
+    useUpdateTaskMutation,
+    useDeleteTaskByIdMutation} = taskApi;
