@@ -2,10 +2,16 @@ import React,{useState,useEffect} from 'react'
 import { useGetAllTasksQuery } from '../redux/taskApi'
 import { useSelector } from 'react-redux';
 import {CirclePlus} from 'lucide-react';
+import TaskAdd from './TaskAdd';
+import ModalContainer from '../components/ModalContainer';
 const TaskLists = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const {data,isLoading,isError} = useGetAllTasksQuery({userId:userInfo._id});
+  const [openTaskAddModal,setOpenTaskAddModal] = useState(false);
 
+  const handleOpenModal = () => {
+    setOpenTaskAddModal(true);
+  };
   if (isLoading) {
     return <div className="text-4xl text-teal-100">Loading tasks...</div>;
   }
@@ -75,10 +81,16 @@ const TaskLists = () => {
     </div>
 
      <button 
+        onClick={handleOpenModal}
         className='rounded-full w-14 h-14 flex items-center justify-center 
          absolute bottom-5 right-2 bg-green-600 text-xl'>
       <CirclePlus color='white' fontSize={45}/>
      </button>
+     
+      {/* Task Add Modal Container */}
+      <ModalContainer showModal={openTaskAddModal} setShowModal={setOpenTaskAddModal}>
+        <TaskAdd/>
+      </ModalContainer>
   </>
   );
 };

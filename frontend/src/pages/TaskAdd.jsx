@@ -11,7 +11,7 @@ const TaskAdd = () => {
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(new Date());
   const { userInfo } = useSelector((state) => state.auth);
-
+  
   const {
     register,
     handleSubmit,
@@ -20,7 +20,7 @@ const TaskAdd = () => {
   } = useForm(
     {
         defaultValues: {
-          user: userInfo.user._id, 
+          user: userInfo._id, 
           date: new Date(),
           status: ''
         }
@@ -28,9 +28,11 @@ const TaskAdd = () => {
   );
 
   const onSubmit = async (data) => {
+    const formattedDate = format(data.duedate, 'MM/dd/yyyy');
+
     try {
-        console.log('task-data',data)
-    //   const res = await registerUser(data).unwrap();
+        console.log({ ...data, duedate: formattedDate });
+        //   const res = await registerUser(data).unwrap();
     //   dispatch(setCredentials({ ...res }));
     //   toast(res.message);
     //   navigate("/");
@@ -55,7 +57,7 @@ const TaskAdd = () => {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-white">title</label>
+        <label className="block text-white">Title</label>
         <input
           type="text"
           {...register("title", {
@@ -71,7 +73,7 @@ const TaskAdd = () => {
       <div className="mb-4">
         <label className="block text-white">Description</label>
         <input
-          type="email"
+          type="text"
           {...register("email", {
             required: "Description is required..",
           })}
@@ -96,7 +98,7 @@ const TaskAdd = () => {
                 setStartDate(date);
                 field.onChange(date);
               }}
-              dateFormat="yyyy/MM/dd"
+              dateFormat="MM/dd/yyyy"
               className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-600 rounded-md"
             />
           )}
@@ -123,21 +125,13 @@ const TaskAdd = () => {
       </div>
       <button
         type="submit"
-        disabled={isSubmitting || isLoading}
+        disabled={isSubmitting}
         className="w-full bg-green-500 text-white px-4 py-2 rounded-md"
       >
-        {isSubmitting || isLoading ? "Registering...." : "SignUp"}
+        {isSubmitting ? "Adding task...." : "Add Task"}
       </button>
     </form>
-    <div className="mt-4 text-center">
-      <p className="text-white">Already have an account?</p>
-      <Link
-        to="/login"
-        className="text-blue-400 hover:underline mt-2 inline-block"
-      >
-        Login
-      </Link>
-    </div>
+
   </div>
   )
 };
