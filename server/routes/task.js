@@ -7,15 +7,15 @@ import verifyToken from '../middleware/authorization.js';
 router.post('/create',verifyToken,createTask);
 
 // @ /api/task
-router.get('/',getAllTasks);
+router.get('/',verifyToken,getAllTasks);
 
 // @ /api/task/123
-router.get('/:id',getTaskById);
+router.get('/:id',verifyToken,getTaskById);
 
 // @ /api/task/124
-router.put('/:id', updateTaskById);
+router.put('/:id',verifyToken, updateTaskById);
 
 // @ /api/task/124
-router.delete('/:id', deleteTaskById);
+router.delete('/:id',verifyToken, deleteTaskById);
 
 export default router;
