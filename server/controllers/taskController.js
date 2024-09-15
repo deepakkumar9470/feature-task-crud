@@ -8,7 +8,8 @@ export const createTask = async (req, res) => {
             title,
             desc,
             duedate: duedate || Date.now(),
-            status: status || 'todo'
+            status: status || 'todo',
+            user : req.user._id
         });
         const savedTask = await newTask.save();
         res.status(201).json({ message: "Task created successfully", task: savedTask });

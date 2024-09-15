@@ -1,9 +1,10 @@
 import express from 'express';
 import { createTask, deleteTaskById, getAllTasks, getTaskById, updateTaskById } from '../controllers/taskController.js';
 const router = express.Router();
+import verifyToken from '../middleware/authorization.js';
 
 // @ /api/task/create 
-router.post('/create',createTask);
+router.post('/create',verifyToken,createTask);
 
 // @ /api/task
 router.get('/',getAllTasks);
