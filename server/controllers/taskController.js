@@ -75,11 +75,19 @@ export const updateTaskById = async (req, res) => {
 
 /********** Getting single task by id *********/
 export const deleteTaskById = async (req, res) => {
+    const userId = req.user._id;
+    const {id} = req.params;
+
     try {
-        const task = await TaskModel.findByIdAndDelete(req.params.id)
+        const task = await TaskModel.findById(id)
         if (!task) {
             return res.status(404).json({ message: "Task not found" });
         }
+        if(!task.user.equals(userId)){
+            return res.status(403).json({ message: "You are not authorized to delete this task" });
+
+        }
+        await TaskModel.findByIdAndDelete(id)
         res.status(200).json({ message: "Task deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: "Failed to delete task" });

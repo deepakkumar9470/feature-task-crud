@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm,Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,6 @@ import { format } from 'date-fns';
 import { useCreateTasMutation } from "../redux/taskApi";
 const TaskAdd = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(new Date());
   const { userInfo } = useSelector((state) => state.auth);
   const [createTask,resInfo]= useCreateTasMutation();
@@ -25,18 +24,15 @@ const TaskAdd = () => {
           date: new Date(),
           status: ''
         }
-      }
-  );
+      });
 
   const onSubmit = async (data) => {
     const formattedDate = format(data.duedate, 'MM/dd/yyyy');
     try {
-        // console.log({ ...data, duedate: formattedDate });
         const response = await createTask({
             ...data,
             duedate: formattedDate,
           });
-      console.log(response)
       toast(response.data.message);
       navigate("/");
     } catch (error) {
