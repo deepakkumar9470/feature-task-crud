@@ -76,8 +76,8 @@ const TaskLists = () => {
 
      <button 
         className='rounded-full w-14 h-14 flex items-center justify-center 
-         absolute bottom-5 right-2 bg-green-500 text-black text-xl'>
-      <CirclePlus/>
+         absolute bottom-5 right-2 bg-green-600 text-xl'>
+      <CirclePlus color='white' fontSize={45}/>
      </button>
   </>
   );
