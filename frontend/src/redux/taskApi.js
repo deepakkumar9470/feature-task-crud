@@ -7,9 +7,10 @@ export const taskApi = createApi({
     }),
     endpoints :(builder)=>({
         getAllTasks : builder.query({
-            query :()=>({
-             url:'/api/task',
-             method :'GET'
+            query :({userId})=>({
+             url:`/api/task`,
+             method :'GET',
+             params :{ userId },
             })
         })
     })

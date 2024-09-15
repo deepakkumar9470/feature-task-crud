@@ -7,7 +7,7 @@ import verifyToken from '../middleware/authorization.js';
 router.post('/create',verifyToken,createTask);
 
 // @ /api/task
-router.get('/',verifyToken,getAllTasks);
+router.get('/',getAllTasks);
 
 // @ /api/task/123
 router.get('/:id',verifyToken,getTaskById);
