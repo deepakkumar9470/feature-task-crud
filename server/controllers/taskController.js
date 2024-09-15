@@ -9,7 +9,7 @@ export const createTask = async (req, res) => {
             desc,
             duedate: duedate || Date.now(),
             status: status || 'todo',
-            user : req.user._id
+            user: req.user._id
         });
         const savedTask = await newTask.save();
         res.status(201).json({ message: "Task created successfully", task: savedTask });
@@ -27,7 +27,7 @@ export const getAllTasks = async (req, res) => {
     // console.log(userid)
     try {
         // const allTasks = await TaskModel.find(query).sort({ createdAt: -1 });
-        const allTasks = await TaskModel.find({user:userId,...query}).sort({ createdAt: -1 });
+        const allTasks = await TaskModel.find({ user: userId, ...query }).sort({ createdAt: -1 });
         res.status(200).json({ message: "Task fetched successfully", tasks: allTasks });
     } catch (error) {
         res.status(500).json({ message: "Failed to fetch tasks" });
@@ -53,22 +53,31 @@ export const getTaskById = async (req, res) => {
 
 /********** Getting single task by id *********/
 export const updateTaskById = async (req, res) => {
+    const userId = req.user._id;
+    const { id } = req.params;
+    const { title, desc, duedate, status } = req.body;
+
     try {
-        const task = await TaskModel.findById(req.params.id)
+        const task = await TaskModel.findById(id);
         if (!task) {
             return res.status(404).json({ message: "Task not found" });
         }
-        const updatedTask = await TaskModel.findByIdAndUpdate(req.params.id, req.body,
-            { new: true, runValidators: true }
-        );
 
-        if (!updatedTask) {
-            return res.status(404).json({ message: "Task not found" });
+        if (!task.user.equals(userId)) {
+            return res.status(403).json({ message: "You are not authorized to update this task" });
+
         }
 
-        res.status(200).json({ message: "Task updated successfully", task: updatedTask });
+        task.title = title || task.title;
+        task.desc = desc || task.desc;
+        task.duedate = duedate || task.duedate;
+        task.status = status || task.status;
+
+        await task.save();
+
+        res.status(200).json({ message: "Task updated successfully", task: task });
     } catch (error) {
-        res.status(500).json({ message: "Failed to delete task" });
+        res.status(500).json({ message: "Failed to update task" });
     }
 };
 
@@ -76,14 +85,14 @@ export const updateTaskById = async (req, res) => {
 /********** Getting single task by id *********/
 export const deleteTaskById = async (req, res) => {
     const userId = req.user._id;
-    const {id} = req.params;
+    const { id } = req.params;
 
     try {
         const task = await TaskModel.findById(id)
         if (!task) {
             return res.status(404).json({ message: "Task not found" });
         }
-        if(!task.user.equals(userId)){
+        if (!task.user.equals(userId)) {
             return res.status(403).json({ message: "You are not authorized to delete this task" });
 
         }
