@@ -7,6 +7,7 @@ import TaskAdd from './TaskAdd';
 import ModalContainer from '../components/ModalContainer';
 import toast from 'react-hot-toast';
 import {Trash,Pencil} from 'lucide-react';
+import TaskEdit from './TaskEdit';
 
 const TaskLists = () => {
   const navigate = useNavigate();
@@ -14,10 +15,16 @@ const TaskLists = () => {
   const {data,isLoading,isError} = useGetAllTasksQuery({userId:userInfo._id});
   const [deleteTask] = useDeleteTaskByIdMutation();
   const [openTaskAddModal,setOpenTaskAddModal] = useState(false);
+  const [openTaskUpdateModal,setOpenTaskUpdateModal] = useState(false);
 
   const handleOpenModal = () => {
     setOpenTaskAddModal(true);
   };
+  const handleOpenUpdateModal = (data) => {
+    console.log("editable task:",data)
+    setOpenTaskUpdateModal(true);
+  };
+
   if (isLoading) {
     return <div className="text-4xl text-center mt-60 text-teal-100">Loading tasks...</div>;
   }
@@ -95,7 +102,11 @@ const TaskLists = () => {
                 </td>
                 <td className="flex items-center gap-2 px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <Trash onClick={()=>handleTaskDelete(task._id)}  className="cursor-pointer" color="#ff0000" fontSize={10} />
-                  <Pencil className="cursor-pointer"  color="#009dff" fontSize={10} />
+                  <Pencil 
+                     onClick={()=>handleOpenUpdateModal(task)}
+                     className="cursor-pointer"  
+                     color="#009dff" 
+                     fontSize={10} />
                 </td>
                 
               </tr>
@@ -115,6 +126,11 @@ const TaskLists = () => {
       {/* Task Add Modal Container */}
       <ModalContainer showModal={openTaskAddModal} setShowModal={setOpenTaskAddModal}>
         <TaskAdd/>
+      </ModalContainer>
+
+       {/* Task Update Modal Container */}
+      <ModalContainer showModal={openTaskUpdateModal} setShowModal={setOpenTaskUpdateModal}>
+        <TaskEdit/>
       </ModalContainer>
   </>
   );
