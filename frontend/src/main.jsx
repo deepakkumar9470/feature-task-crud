@@ -18,11 +18,11 @@ import TaskLists from './pages/TaskLists.jsx';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App/>}>
-      {/* <Route index={true} path='/' element={<HomeScreen/>}/> */}
+       <Route index={true}  element={<HomeScreen/>}/>
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<SignUp />} />
       <Route path='' element={<ProtectedRoutes/>}>
-       <Route index={true} element={<TaskLists />} />
+       <Route path='/tasklists'  element={<TaskLists />} />
       </Route>
     </Route>
   )

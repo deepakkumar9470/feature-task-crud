@@ -97,6 +97,8 @@ const Navbar = () => {
                {
                 userInfo && (
                   <div className='flex items-center gap-4'>
+                    <Link className='text-gray-400 font-medium' 
+                    to="/tasklists">Tasks</Link>
                     <p className='text-gray-400 font-medium'>{userInfo.name}</p>
                     <button 
                     onClick={logoutHandler}
