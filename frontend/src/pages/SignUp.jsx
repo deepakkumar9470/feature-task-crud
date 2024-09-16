@@ -36,7 +36,7 @@ const SignUp = () => {
     }
   };
   return (
-    <div className="flex items-center justify-center min-h-screen p-6 bg-gray-900 rounded-lg shadow-lg max-w-md mx-auto">
+    <div className="flex items-center justify-center min-h-[90vh] mt-6 p-6 bg-gray-900 rounded-lg shadow-lg max-w-md mx-auto">
       <div className="p-6 bg-gray-900 rounded-lg shadow-lg max-w-md w-full">
         <h2 className="text-2xl text-center text-white font-semibold mb-4">
           Sign Up Here
