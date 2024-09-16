@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   useGetAllTasksQuery,
   useDeleteTaskByIdMutation,
 } from "../redux/taskApi";
 import { useSelector } from "react-redux";
 import {
-  Trash,
-  Pencil,
   CirclePlus,
   FileText,
   Hourglass,
@@ -20,6 +18,8 @@ import toast from "react-hot-toast";
 import TaskEdit from "./TaskEdit";
 import FilterTask from "../components/FilterTask";
 import TableC from "../components/TableC";
+import Loader from "../components/Loader";
+import { motion } from "framer-motion";
 
 const TaskLists = () => {
   const navigate = useNavigate();
@@ -51,9 +51,7 @@ const TaskLists = () => {
 
   if (isLoading) {
     return (
-      <div className="text-4xl text-center mt-60 text-teal-100">
-        Loading tasks...
-      </div>
+    <Loader/>
     );
   }
 
@@ -89,82 +87,105 @@ const TaskLists = () => {
 
   return (
     <>
-      <div className="px-10 py-6 space-y-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-6">
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 cursor-pointer rounded-xl shadow-lg transform transition-transform hover:scale-105">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold">Total Tasks</h2>
-              <span className="text-3xl">
-                <FileText />
-              </span>
-            </div>
-            <p className="mt-4 text-5xl font-extrabold">{totalTasks}</p>
-          </div>
-          <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 cursor-pointer rounded-xl shadow-lg transform transition-transform hover:scale-105">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold">Completed Tasks</h2>
-              <span className="text-3xl">
-                <SquareCheckBig />
-              </span>
-            </div>
-            <p className="mt-4 text-5xl font-extrabold">{completedTasks}</p>
-          </div>
-          <div className="bg-gradient-to-r from-gray-500 to-gray-600 text-white p-6 cursor-pointer rounded-xl shadow-lg transform transition-transform hover:scale-105">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold">Pending Tasks</h2>
-              <span className="text-3xl">
-                <Hourglass />
-              </span>
-            </div>
-            <p className="mt-4 text-5xl font-extrabold">{pendingTasks}</p>
-          </div>
-          <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white p-6 cursor-pointer rounded-xl shadow-lg transform transition-transform hover:scale-105">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold">Progress Tasks</h2>
-              <span className="text-3xl">
-                <RefreshCcw />
-              </span>
-            </div>
-            <p className="mt-4 text-5xl font-extrabold">{progressTasks}</p>
-          </div>
+  <div className="px-10 py-6 space-y-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 p-6">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        whileHover={{ scale: 1.05 }}
+        className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-6 cursor-pointer rounded-xl shadow-lg"
+      >
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold">Total Tasks</h2>
+          <span className="text-3xl">
+            <FileText />
+          </span>
         </div>
+        <p className="mt-4 text-5xl font-extrabold">{totalTasks}</p>
+      </motion.div>
 
-        <FilterTask
-          filter={filter}
-          filterTasks={data}
-          handleFilterChange={handleFilterChange}
-        />
-
-        <TableC
-          tasksList={filteredTasks}
-          handleOpenUpdateModal={handleOpenUpdateModal}
-          handleTaskDelete={handleTaskDelete}
-        />
-      </div>
-
-      <button
-        onClick={handleOpenModal}
-        className="fixed bottom-5 right-5 rounded-full w-16 h-16 flex items-center justify-center bg-green-600 text-white shadow-lg hover:bg-green-700 transition-transform transform hover:scale-110"
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        whileHover={{ scale: 1.05 }}
+        className="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 cursor-pointer rounded-xl shadow-lg"
       >
-        <CirclePlus color="white" fontSize={45} />
-      </button>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold">Completed Tasks</h2>
+          <span className="text-3xl">
+            <SquareCheckBig />
+          </span>
+        </div>
+        <p className="mt-4 text-5xl font-extrabold">{completedTasks}</p>
+      </motion.div>
 
-      {/* Task Add Modal Container */}
-      <ModalContainer
-        showModal={openTaskAddModal}
-        setShowModal={setOpenTaskAddModal}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        whileHover={{ scale: 1.05 }}
+        className="bg-gradient-to-r from-gray-500 to-gray-600 text-white p-6 cursor-pointer rounded-xl shadow-lg"
       >
-        <TaskAdd refetchTasks={refetch} onClose={()=>setOpenTaskAddModal(false)}/>
-      </ModalContainer>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold">Pending Tasks</h2>
+          <span className="text-3xl">
+            <Hourglass />
+          </span>
+        </div>
+        <p className="mt-4 text-5xl font-extrabold">{pendingTasks}</p>
+      </motion.div>
 
-      {/* Task Update Modal Container */}
-      <ModalContainer
-        showModal={openTaskUpdateModal}
-        setShowModal={setOpenTaskUpdateModal}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        whileHover={{ scale: 1.05 }}
+        className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white p-6 cursor-pointer rounded-xl shadow-lg"
       >
-        <TaskEdit task={taskToUpdate} onClose={()=>setOpenTaskUpdateModal(false)} />
-      </ModalContainer>
-    </>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold">Progress Tasks</h2>
+          <span className="text-3xl">
+            <RefreshCcw />
+          </span>
+        </div>
+        <p className="mt-4 text-5xl font-extrabold">{progressTasks}</p>
+      </motion.div>
+    </div>
+
+    {/* Filter Task Section */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <FilterTask
+        filter={filter}
+        filterTasks={data}
+        handleFilterChange={handleFilterChange}
+      />
+    </motion.div>
+
+    {/* Task List */}
+    <TableC
+      tasksList={filteredTasks}
+      handleOpenUpdateModal={handleOpenUpdateModal}
+      handleTaskDelete={handleTaskDelete}
+    />
+  </div>
+
+  {/* Add Task Button */}
+  <motion.button
+    onClick={handleOpenModal}
+    whileHover={{ scale: 1.1 }}
+    whileTap={{ scale: 0.9 }}
+    className="fixed bottom-5 right-5 rounded-full w-16 h-16 flex items-center justify-center bg-green-600 text-white shadow-lg hover:bg-green-700 transition-transform transform"
+  >
+    <CirclePlus color="white" fontSize={45} />
+  </motion.button>
+</>
+
   );
 };
 
