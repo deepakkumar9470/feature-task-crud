@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
 import { useUpdateTaskMutation } from "../redux/taskApi";
-const TaskEdit = ({ task, refetchTasks,onClose }) => {
+const TaskEdit = ({ task, refetchTasks, onClose }) => {
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(new Date());
   const { userInfo } = useSelector((state) => state.auth);
@@ -46,7 +46,7 @@ const TaskEdit = ({ task, refetchTasks,onClose }) => {
         id: task._id,
         ...data,
         duedate: formattedDate,
-      }).unwrap();      
+      }).unwrap();
       toast(response.message);
       window.location.reload();
       onClose();
@@ -88,7 +88,8 @@ const TaskEdit = ({ task, refetchTasks,onClose }) => {
         </div>
         <div className="mb-4">
           <label className="block text-white">Description</label>
-          <input
+          <textarea
+            rows={3}
             type="text"
             {...register("desc", {
               required: "Description is required..",
