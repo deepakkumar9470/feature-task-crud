@@ -63,7 +63,7 @@ const TableC = ({ tasksList, handleOpenUpdateModal, handleTaskDelete }) => {
                     </td>
                     <td className="flex items-center gap-2 px-5 py-5 border-0 bg-mainBg text-sm">
                       <Trash
-                        onClick={() => handleTaskDelete(task.id)}
+                        onClick={() => handleTaskDelete(task._id)}
                         className="cursor-pointer hover:scale-110 transform transition duration-150"
                         color="#ff0000"
                         fontSize={18}
