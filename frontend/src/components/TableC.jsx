@@ -1,7 +1,14 @@
 import React from "react";
 import { Trash, Pencil } from "lucide-react";
 const TableC = ({ tasksList, handleOpenUpdateModal, handleTaskDelete }) => {
-  return (
+  if (!tasksList || tasksList.length === 0) {
+    return (
+      <div className="text-center py-10">
+        <p className="text-gray-300 text-lg">No tasks available add here..</p>
+      </div>
+    );
+  }
+  return  (
     <div className="container mx-auto px-4 sm:px-8">
     <div className="py-2">
       <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
@@ -74,7 +81,7 @@ const TableC = ({ tasksList, handleOpenUpdateModal, handleTaskDelete }) => {
         </div>
       </div>
     </div>
-  </div>
+   </div>
   
   );
 };
