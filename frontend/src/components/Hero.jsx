@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Hero = () => {
     return (
         <section className="relative bg-cover bg-center bg-no-repeat h-screen flex items-center" style={{ backgroundImage: `url('https://source.unsplash.com/1600x900/?task,workspace')` }}>
-            <div className="absolute inset-0 bg-black opacity-50"></div> {/* Dark overlay */}
+            <div className="absolute inset-0 bg-black opacity-50"></div>
             
             <div className="container mx-auto px-6 text-center relative z-10">
                 <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-tight">
