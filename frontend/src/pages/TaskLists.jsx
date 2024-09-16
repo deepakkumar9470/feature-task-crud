@@ -154,7 +154,7 @@ const TaskLists = () => {
         showModal={openTaskAddModal}
         setShowModal={setOpenTaskAddModal}
       >
-        <TaskAdd refetchTasks={refetch}/>
+        <TaskAdd refetchTasks={refetch} onClose={()=>setOpenTaskAddModal(false)}/>
       </ModalContainer>
 
       {/* Task Update Modal Container */}
@@ -162,7 +162,7 @@ const TaskLists = () => {
         showModal={openTaskUpdateModal}
         setShowModal={setOpenTaskUpdateModal}
       >
-        <TaskEdit task={taskToUpdate} />
+        <TaskEdit task={taskToUpdate} onClose={()=>setOpenTaskUpdateModal(false)} />
       </ModalContainer>
     </>
   );

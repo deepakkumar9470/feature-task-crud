@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
 import { useUpdateTaskMutation } from "../redux/taskApi";
-const TaskEdit = ({ task, refetchTasks }) => {
+const TaskEdit = ({ task, refetchTasks,onClose }) => {
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(new Date());
   const { userInfo } = useSelector((state) => state.auth);
@@ -49,6 +49,7 @@ const TaskEdit = ({ task, refetchTasks }) => {
       }).unwrap();      
       toast(response.message);
       window.location.reload();
+      onClose();
       navigate("/tasklists");
     } catch (error) {
       console.log(error);
