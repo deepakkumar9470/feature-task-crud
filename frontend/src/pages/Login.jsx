@@ -1,14 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../redux/usersApiSlice";
 import { setCredentials } from "../redux/authSlice";
 import toast from "react-hot-toast";
-
+import { Eye } from "lucide-react";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [passwordShow, setPasswordShow] = useState(false);
   const {
     register,
     handleSubmit,
@@ -61,10 +62,10 @@ const Login = () => {
             )}
           </div>
 
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="block text-white">Password</label>
             <input
-              type="password"
+              type={passwordShow ? "text" : "password"}
               {...register("password", {
                 required: "Password is required..",
                 minLength: {
@@ -72,8 +73,14 @@ const Login = () => {
                   message: "Password must be 8 characters long..",
                 },
               })}
-              className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-600 rounded-md"
+              className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-600 rounded-md pr-10" // Added padding to the right for the icon
             />
+            <div
+              onClick={() => setPasswordShow(!passwordShow)}
+              className="absolute right-3 top-8 cursor-pointer text-white"
+            >
+              <Eye className="text-gray-400" />
+            </div>
             {errors.password && (
               <div className="text-red-500">{errors.password.message}</div>
             )}
