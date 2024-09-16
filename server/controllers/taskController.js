@@ -1,7 +1,8 @@
 import TaskModel from '../models/Task.js';
-import mongoose from 'mongoose';
+import asyncHandler from 'express-async-handler';
+
 /********** Creating new task *********/
-export const createTask = async (req, res) => {
+export const createTask = asyncHandler(async (req, res) => {
     try {
         const { title, desc, duedate, status } = req.body;
         const newTask = new TaskModel({
@@ -17,10 +18,10 @@ export const createTask = async (req, res) => {
         console.log(error)
         res.status(500).json({ message: "Failed to create task" });
     }
-};
+});
 
 /********** Getting all tasks *********/
-export const getAllTasks = async (req, res) => {
+export const getAllTasks = asyncHandler(async (req, res) => {
     const query = req.query.status ? { status: req.query.status } : {};
     const userId = req.query.userId
     try {
@@ -29,10 +30,10 @@ export const getAllTasks = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Failed to fetch tasks" });
     }
-};
+});
 
 /********** Getting single task by id *********/
-export const getTaskById = async (req, res) => {
+export const getTaskById = asyncHandler(async (req, res) => {
 
     const userId = req.user._id;
 
@@ -58,11 +59,11 @@ export const getTaskById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Failed to fetch single task" });
     }
-};
+});
 
 
 /********** Getting single task by id *********/
-export const updateTaskById = async (req, res) => {
+export const updateTaskById = asyncHandler(async (req, res) => {
     const userId = req.user._id;
     const { id } = req.params;
     const { title, desc, duedate, status } = req.body;
@@ -89,11 +90,11 @@ export const updateTaskById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Failed to update task" });
     }
-};
+});
 
 
 /********** Getting single task by id *********/
-export const deleteTaskById = async (req, res) => {
+export const deleteTaskById = asyncHandler(async (req, res) => {
     const userId = req.user._id;
     const { id } = req.params;
 
@@ -111,4 +112,4 @@ export const deleteTaskById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Failed to delete task" });
     }
-};   
+});   
