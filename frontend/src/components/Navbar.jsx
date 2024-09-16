@@ -7,7 +7,7 @@ import { useDispatch,useSelector } from 'react-redux';
 import { useLogoutMutation } from '../redux/usersApiSlice';
 import { logout } from '../redux/authSlice';
 import toast from 'react-hot-toast';
-
+import {CircleUserRound} from 'lucide-react';
 const Navbar = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -97,7 +97,11 @@ const Navbar = () => {
                   <div className='flex items-center gap-4'>
                     <Link className='text-gray-400 font-medium' 
                     to="/tasklists">Tasks</Link>
-                    <p className='text-gray-400 font-medium'>{userInfo.name}</p>
+                    <div className='flex items-center cursor-pointer'>
+                    <CircleUserRound className='text-gray-400'/>
+
+                    <p className='text-gray-400 text-xl font-medium'>{(userInfo.name).substring(0,1)}</p>
+                    </div>
                     <button 
                     onClick={logoutHandler}
                     className='className="md:p-4 py-2 px-4 rounded-md block bg-gradient-to-r from-blue-500 to-green-500 text-white hover:shadow-lg transition-all duration-300"'>Logout</button>
