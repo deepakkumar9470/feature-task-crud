@@ -24,7 +24,7 @@ import TableC from "../components/TableC";
 const TaskLists = () => {
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
-  const { data, isLoading, isError } = useGetAllTasksQuery({
+  const { data, isLoading, isError ,refetch} = useGetAllTasksQuery({
     userId: userInfo._id,
   });
   const [deleteTask] = useDeleteTaskByIdMutation();
@@ -75,8 +75,11 @@ const TaskLists = () => {
   const handleTaskDelete = async (id) => {
     try {
       const response = await deleteTask(id);
-      navigate("/");
-      toast(response.data.message);
+      if (response?.data) {
+        toast.success(response.data.message);
+        refetch();
+        navigate("/tasklists");
+      }
     } catch (error) {
       const errorMessage =
         error?.response?.data?.message || "opps failed to delete task.";
@@ -151,7 +154,7 @@ const TaskLists = () => {
         showModal={openTaskAddModal}
         setShowModal={setOpenTaskAddModal}
       >
-        <TaskAdd />
+        <TaskAdd refetchTasks={refetch}/>
       </ModalContainer>
 
       {/* Task Update Modal Container */}

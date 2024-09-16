@@ -7,7 +7,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
 import { useCreateTasMutation } from "../redux/taskApi";
-const TaskAdd = () => {
+const TaskAdd = ({refetchTasks}) => {
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(new Date());
   const { userInfo } = useSelector((state) => state.auth);
@@ -33,8 +33,11 @@ const TaskAdd = () => {
             ...data,
             duedate: formattedDate,
           });
-      toast(response.data.message);
-      navigate("/");
+      if(response.data){
+        refetchTasks();
+        toast(response.data.message);
+        navigate("/tasklists");
+      }    
     } catch (error) {
       const errorMessage =
         error?.response?.data?.message || "opps failed to add task.";

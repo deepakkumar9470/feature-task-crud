@@ -16,16 +16,15 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate('/');
+      navigate('/tasklists');
     }
   }, [navigate, userInfo]);
   const onSubmit = async (data) => {
     try {
       const res = await login(data).unwrap();
       dispatch(setCredentials({...res}));
-      console.log(res)
       toast(res.message)
-      navigate('/')
+      navigate('/tasklists')
       } catch (error) {
         const errorMessage = error?.response?.data?.message || 'opps failed to login.';
         toast.error(errorMessage);

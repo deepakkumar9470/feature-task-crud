@@ -28,7 +28,7 @@ const SignUp = () => {
       const res = await registerUser(data).unwrap();
       dispatch(setCredentials({ ...res }));
       toast(res.message);
-      navigate("/");
+      navigate("/tasklists");
     } catch (error) {
       const errorMessage =
         error?.response?.data?.message || "opps failed to register.";
