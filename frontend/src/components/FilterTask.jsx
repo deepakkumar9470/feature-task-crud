@@ -3,7 +3,7 @@ import React from 'react'
 const FilterTask = ({filter,handleFilterChange}) => {
   return (
     <div className="px-6 py-2 flex items-start gap-2">
-      <h1 className="text-xl font-bold mb-2 text-gray-300">Filter Task : </h1>
+      <h1 className="hidden lg:block text-xl font-bold mb-2 text-gray-300">Filter Task : </h1>
 
       <div className="flex space-x-4 mb-4">
         <button
