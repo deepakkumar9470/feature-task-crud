@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
 const Hero = () => {
+    const {userInfo} = useSelector((state)=>state.auth);
+
     return (
         <section className="relative bg-cover bg-center bg-no-repeat h-screen flex items-center" style={{ backgroundImage: `url('https://source.unsplash.com/1600x900/?task,workspace')` }}>
             <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -16,12 +19,21 @@ const Hero = () => {
 
 
                 <div className="mt-8 space-x-4">
-                    <Link to="/login" className="inline-block py-3 px-6 bg-green-500 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-green-600 transition duration-300 ease-in-out">
+                    {  !userInfo &&
+                        <>
+                           <Link to="/login" className="inline-block py-3 px-6 bg-green-500 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-green-600 transition duration-300 ease-in-out">
                         Get Started
                     </Link>
                     <Link to="/register" className="inline-block py-3 px-6 bg-transparent border border-white text-white text-lg font-semibold rounded-lg hover:bg-white hover:text-black transition duration-300 ease-in-out">
                         Sign Up
                     </Link>
+                        </>
+                    }
+
+                    {
+                        userInfo && 
+                         <span className="text-2xl font-bold text-green-400">Welcome {userInfo?.name ? userInfo?.name : ''} 🤵</span>
+                    }
                 </div>
             </div>
         </section>
