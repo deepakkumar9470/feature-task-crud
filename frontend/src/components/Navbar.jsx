@@ -10,7 +10,6 @@ import toast from 'react-hot-toast';
 
 const Navbar = () => {
   const { userInfo } = useSelector((state) => state.auth);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [logoutApiCall] = useLogoutMutation()
@@ -73,24 +72,23 @@ const Navbar = () => {
               <li>
                 {
                   !userInfo && (
-                    <button
-                  onClick={() => handleOpenModal('Login')}
-                  className="md:p-4 py-2 px-4 rounded-md block text-gray-100 hover:bg-green-600 transition-colors duration-300"
-                >
-                  Login
-                </button>
+                    <Link
+                    to="/login"
+                    className="md:p-4 py-2 px-4 rounded-md block text-gray-100 hover:bg-green-600 transition-colors duration-300"
+                     >
+                    Login
+                  </Link>
                   )
                 }
               </li>
               <li>
                {
                 !userInfo && (
-                  <button
-                  onClick={() => handleOpenModal('Signup')}
-                  className="md:p-4 py-2 px-4 rounded-md block bg-gradient-to-r from-blue-500 to-green-500 text-white hover:shadow-lg transition-all duration-300"
-                >
-                  Sign Up
-                </button>
+                <Link 
+                   className="md:p-4 py-2 px-4 rounded-md block bg-gradient-to-r from-blue-500 to-green-500 text-white hover:shadow-lg transition-all duration-300" 
+                   to="/register">
+                 SignUp
+                </Link>
                 )
                }
 
