@@ -10,6 +10,9 @@
 9. Protected routes.
 10.Responsive ui across all devices.
 11. Use tailwindcss for eligant styling.
+12. Implement filter taks  based on Status and  Priority
+    Note :  To see result click on status then priority 
+            you will get desired result.
 
 
 
