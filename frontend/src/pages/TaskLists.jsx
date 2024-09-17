@@ -20,6 +20,7 @@ import FilterTask from "../components/FilterTask";
 import TableC from "../components/TableC";
 import Loader from "../components/Loader";
 import { motion } from "framer-motion";
+import PriorityFilter from "../components/PriorityFilter";
 
 const TaskLists = () => {
   const navigate = useNavigate();
@@ -152,8 +153,9 @@ const TaskLists = () => {
           </motion.div>
         </div>
 
-        {/* Filter Task Section */}
-        <motion.div
+        {/* Filter & Priority section Task Section */}
+          <div className="flex justify-between">
+          <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -164,7 +166,15 @@ const TaskLists = () => {
             handleFilterChange={handleFilterChange}
           />
         </motion.div>
-
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+        <PriorityFilter/>
+        </motion.div>
+          </div>
+        
         {/* Task List */}
         <TableC
           tasksList={filteredTasks}
