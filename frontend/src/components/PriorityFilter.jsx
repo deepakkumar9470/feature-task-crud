@@ -8,7 +8,7 @@ const PriorityFilter = ({ priority, handlePriorityChange }) => {
       </h2>
       <select
         value={priority}
-        onChange={() => handlePriorityChange(e.target.value)}
+        onChange={(e) => handlePriorityChange(e.target.value)}
         className="w-full px-3 py-2 bg-gray-800 text-white border border-gray-600 rounded-md"
       >
         <option value="">Select Priority</option>

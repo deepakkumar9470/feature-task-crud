@@ -55,11 +55,11 @@ const TaskLists = () => {
     setPriority(newPriority);
   };
   const filteredTasks = data?.tasks?.filter((item) => {
-     const statusMatch = filter === "all" || item.status === filter;
-     const priorityMatch = priority === "all" || item.priority === priority;
-     return statusMatch && priorityMatch;
+    const statusMatch = filter === "all" || item.status === filter;
+    const priorityMatch = priority === "all" || item.priority === priority;
+    return statusMatch && priorityMatch;
   });
-
+  
   if (isLoading) {
     return <Loader />;
   }
@@ -72,13 +72,11 @@ const TaskLists = () => {
     );
   }
   const totalTasks = data?.tasks?.length || 0;
-  const pendingTasks =
-    data?.tasks?.filter((task) => task.status === "todo").length || 0;
-  const completedTasks =
-    data?.tasks?.filter((task) => task.status === "done").length || 0;
-  const progressTasks =
-    data?.tasks?.filter((task) => task.status === "inprogress").length || 0;
 
+  const pendingTasks = filteredTasks.filter((task) => task.status === "todo").length || 0;
+  const completedTasks = filteredTasks.filter((task) => task.status === "done").length || 0;
+  const progressTasks = filteredTasks.filter((task) => task.status === "inprogress").length || 0;
+  
   const handleTaskDelete = async (id) => {
     try {
       const response = await deleteTask(id);
@@ -187,7 +185,7 @@ const TaskLists = () => {
         
         {/* Task List */}
         <TableC
-          tasksList={filteredTasks}
+          tasksList={filteredTasks || []}
           handleOpenUpdateModal={handleOpenUpdateModal}
           handleTaskDelete={handleTaskDelete}
         />

@@ -1,6 +1,7 @@
 import React from "react";
 import { Trash, Pencil } from "lucide-react";
 const TableC = ({ tasksList, handleOpenUpdateModal, handleTaskDelete }) => {
+
   if (!tasksList || tasksList.length === 0) {
     return (
       <div className="text-center py-10">
