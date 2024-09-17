@@ -30,18 +30,21 @@ const TableC = ({ tasksList, handleOpenUpdateModal, handleTaskDelete }) => {
                   Status
                 </th>
                 <th className="px-5 py-3 border-b-2 border-gray-200 bg-secBg text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Priority
+                </th>
+                <th className="px-5 py-3 border-b-2 border-gray-200 bg-secBg text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   Action
                 </th>
               </tr>
             </thead>
             <tbody>
               {tasksList?.map((task) => (
-                <tr key={task.id}>
+                <tr key={task._id}>
                   <td className="px-5 py-5 border-b border-gray-200 bg-mainBg text-sm">
                     <p className="text-gray-200 whitespace-no-wrap">{task.title}</p>
                   </td>
                   <td className="hidden lg:table-cell px-5 py-5 border-b border-gray-200 bg-mainBg text-sm">
-                    <p className="text-gray-200 whitespace-no-wrap">{(task.desc).substring(0,20)+ "..."}</p>
+                    <p className="text-gray-200 whitespace-no-wrap">{(task.desc).substring(0, 20) + "..."}</p>
                   </td>
                   <td className="hidden lg:table-cell px-5 py-5 border-b border-gray-200 bg-mainBg text-sm">
                     <p className="text-gray-200 whitespace-no-wrap">{task.duedate}</p>
@@ -58,6 +61,20 @@ const TableC = ({ tasksList, handleOpenUpdateModal, handleTaskDelete }) => {
                     >
                       <span aria-hidden className="absolute inset-0 opacity-50 rounded-full"></span>
                       <span className="relative">{task.status}</span>
+                    </span>
+                  </td>
+                  <td className="px-5 py-5 border-b border-gray-200 bg-mainBg text-sm">
+                    <span
+                      className={`relative inline-block px-3 py-1 font-semibold text-black rounded-3xl ${
+                        task.priority === "high"
+        ? "bg-[#FF8A8A]" 
+        : task.priority === "medium"
+        ? "bg-[#FFFDCB]" 
+        : "bg-[#E0FBE2]" 
+                      } leading-tight`}
+                    >
+                      <span aria-hidden className="absolute inset-0 opacity-50 rounded-full"></span>
+                      <span className="relative">{task.priority}</span>
                     </span>
                   </td>
                   {/* Action column */}
@@ -82,7 +99,7 @@ const TableC = ({ tasksList, handleOpenUpdateModal, handleTaskDelete }) => {
         </div>
       </div>
     </div>
-   </div>
+  </div>
   
   );
 };
