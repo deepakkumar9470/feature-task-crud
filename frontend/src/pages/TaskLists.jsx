@@ -25,15 +25,20 @@ import PriorityFilter from "../components/PriorityFilter";
 const TaskLists = () => {
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
+  const [filter, setFilter] = useState("all");
+  const [priority, setPriority] = useState("all");
+
   const { data, isLoading, isError, refetch } = useGetAllTasksQuery({
     userId: userInfo._id,
+    status: filter,   
+    priority: priority,
+    sortBy: "asc", 
   });
   const [deleteTask] = useDeleteTaskByIdMutation();
   const [openTaskAddModal, setOpenTaskAddModal] = useState(false);
   const [openTaskUpdateModal, setOpenTaskUpdateModal] = useState(false);
   const [taskToUpdate, setTaskToUpdate] = useState(null);
 
-  const [filter, setFilter] = useState("all");
 
   const handleOpenModal = () => {
     setOpenTaskAddModal(true);
@@ -45,9 +50,14 @@ const TaskLists = () => {
   const handleFilterChange = (type) => {
     setFilter(type);
   };
+
+  const handlePriorityChange = (newPriority) => {
+    setPriority(newPriority);
+  };
   const filteredTasks = data?.tasks?.filter((item) => {
-    if (filter === "all") return true;
-    return item.status === filter;
+     const statusMatch = filter === "all" || item.status === filter;
+     const priorityMatch = priority === "all" || item.priority === priority;
+     return statusMatch && priorityMatch;
   });
 
   if (isLoading) {
@@ -56,7 +66,7 @@ const TaskLists = () => {
 
   if (isError) {
     return (
-      <div className="text-red-500 text-center mt-60">
+      <div className="text-red-500 text-2xl text-center mt-60">
         Failed to load tasks!
       </div>
     );
@@ -171,7 +181,7 @@ const TaskLists = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-        <PriorityFilter/>
+        <PriorityFilter priority={priority} handlePriorityChange={handlePriorityChange}/>
         </motion.div>
           </div>
         

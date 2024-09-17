@@ -7,10 +7,14 @@ export const taskApi = createApi({
     }),
     endpoints :(builder)=>({
         getAllTasks : builder.query({
-            query :({userId})=>({
+            query :({userId,status, priority, sortBy = 'asc'})=>({
              url:`/api/task`,
              method :'GET',
-             params :{ userId },
+             params :{ 
+                userId,
+                status,
+                priority,
+                sortBy, },
             })
         }),
         getTaskById : builder.query({
