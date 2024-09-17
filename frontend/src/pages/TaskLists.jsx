@@ -30,8 +30,8 @@ const TaskLists = () => {
 
   const { data, isLoading, isError, refetch } = useGetAllTasksQuery({
     userId: userInfo._id,
-    status: filter,   
-    priority: priority,
+    status: filter ==="all" ? undefined :filter,   
+    priority: priority==="all" ? undefined :priority,
     sortBy: "asc", 
   });
   const [deleteTask] = useDeleteTaskByIdMutation();
@@ -162,7 +162,7 @@ const TaskLists = () => {
         </div>
 
         {/* Filter & Priority section Task Section */}
-          <div className="flex justify-between">
+          <div className="flex-col flex lg:flex-row justify-between">
           <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
