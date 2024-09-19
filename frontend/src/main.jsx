@@ -8,6 +8,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen.jsx";
+import NotFound from "./components/NotFound.jsx";
 import Login from "./pages/Login.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import { Provider } from "react-redux";
@@ -18,6 +19,7 @@ import TaskLists from "./pages/TaskLists.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      <Route path="*" element={<NotFound />} />
       <Route index={true} element={<HomeScreen />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<SignUp />} />
